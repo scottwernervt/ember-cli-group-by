@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "An Ember.js helper for grouping objects by async properties.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "helpers",
+    "group-by"
   ],
   "license": "MIT",
   "author": "Scott Werner <scott.werner.vt@gmail.com>",
