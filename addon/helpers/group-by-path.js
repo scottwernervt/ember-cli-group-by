@@ -18,6 +18,7 @@ const {
   Helper,
   RSVP,
   computed,
+  run,
 } = Ember;
 
 const {
@@ -90,7 +91,7 @@ export default Helper.extend({
     }
 
     // items added / removed from array
-    this.recompute();
+    run.once(this, this.recompute);
   }),
 
   // eslint-disable-next-line ember/no-observers
