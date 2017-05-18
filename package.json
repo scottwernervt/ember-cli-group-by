@@ -1,17 +1,19 @@
 {
   "name": "ember-cli-group-by",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "An Ember.js helper for grouping objects by async properties.",
   "keywords": [
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Scott Werner <scott.werner.vt@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/scottwernervt/ember-cli-group-by",
+  "bugs": "https://github.com/scottwernervt/ember-cli-group-by/issues",
+  "homepage": "https://github.com/scottwernervt/ember-cli-group-by",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
