@@ -26,12 +26,14 @@ const {
 } = DS;
 
 const groupBy = function () {
-  const groups = Ember.Object.create({});
   const byPath = get(this, 'byPath');
   const array = get(this, 'array');
   const missing = get(this, 'missing');
-  const paths = byPath.split('.');
 
+  const paths = byPath.split('.');
+  const groups = Ember.Object.create({});
+
+  // eslint-disable-next-line ember/named-functions-in-promises
   const promises = RSVP.resolve(array).then((items) => {
     return RSVP.all(items.map((item) => {
       const itemGroup = paths.reduce(
@@ -40,6 +42,7 @@ const groupBy = function () {
           return previousItem.then(nestedItem => get(nestedItem, path));
         }, item);
 
+      // eslint-disable-next-line ember/named-functions-in-promises
       return RSVP.resolve(itemGroup).then((groupName) => {
         const groupKey = isEmpty(groupName) ? missing : groupName;
         let group = get(groups, `${groupKey}`); // support non strings
@@ -61,19 +64,28 @@ const groupBy = function () {
 
 export default Helper.extend({
   compute([byPath, array, missing]) {
-    set(this, 'array', array);
     set(this, 'byPath', byPath);
+    set(this, 'array', array);
     set(this, 'missing', missing);
+
+    // TODO: CODE: _nestedX cp does not fire unless it is called at least once.
+    Object.keys(this).forEach((property) => {
+      if (property.startsWith('_nested')) {
+        get(this, property);
+      }
+    });
+
     return get(this, 'content');
   },
 
   // eslint-disable-next-line ember/no-observers
   paramsDidChanged: observer('byPath', 'defaultGroup', 'array.[]', function () {
     const byPath = get(this, 'byPath');
+
     if (!isEmpty(byPath)) {
-      if (byPath.includes('.')) { // nested path: item.pathA.pathX
+      // chain computed properties since they only work one level deep.
+      if (byPath.includes('.')) {
         byPath.split('.').forEach((path, index, paths) => {
-          // Dependent keys containing @each only work one level deep.
           if (index === 0) {
             defineProperty(this, `_nested${index}`, computed.mapBy('array', path));
           } else if (index + 1 === paths.length) {
@@ -83,7 +95,7 @@ export default Helper.extend({
             defineProperty(this, `_nested${index}`, computed.mapBy(`_nested${index - 1}`, path));
           }
         });
-      } else { // single path: item.pathX
+      } else {
         defineProperty(this, 'content', computed(`array.@each.${byPath}`, groupBy));
       }
     } else {
