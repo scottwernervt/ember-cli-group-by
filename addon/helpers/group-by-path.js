@@ -33,17 +33,19 @@ const groupBy = function () {
   const paths = byPath.split('.');
   const groups = Ember.Object.create({});
 
-  // eslint-disable-next-line ember/named-functions-in-promises
-  const promises = RSVP.resolve(array).then((items) => {
-    return RSVP.all(items.map((item) => {
+  const arrayPromise = RSVP.resolve(array);
+
+  const promise = arrayPromise.then(items =>
+    RSVP.all(items.map((item) => {
       const itemGroup = paths.reduce(
         (previous, path) => {
           const previousItem = RSVP.resolve(previous);
           return previousItem.then(nestedItem => get(nestedItem, path));
         }, item);
 
-      // eslint-disable-next-line ember/named-functions-in-promises
-      return RSVP.resolve(itemGroup).then((groupName) => {
+      const itemGroupPromise = RSVP.resolve(itemGroup);
+
+      return itemGroupPromise.then((groupName) => {
         const groupKey = isEmpty(groupName) ? missing : groupName;
         let group = get(groups, `${groupKey}`); // support non strings
 
@@ -54,11 +56,10 @@ const groupBy = function () {
 
         group.pushObject(item);
       });
-    }));
-  });
+    })));
 
   return PromiseObject.create({
-    promise: promises.then(() => groups),
+    promise: promise.then(() => groups),
   });
 };
 
