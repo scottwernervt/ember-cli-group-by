@@ -79,7 +79,7 @@ export default Helper.extend({
   },
 
   // eslint-disable-next-line ember/no-observers
-  paramsDidChanged: observer('byPath', 'defaultGroup', 'array.[]', function () {
+  paramsDidChanged: observer('byPath', 'missing', 'array.[]', function () {
     const byPath = get(this, 'byPath');
 
     if (!isEmpty(byPath)) {
