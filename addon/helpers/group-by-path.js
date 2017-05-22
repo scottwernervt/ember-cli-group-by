@@ -11,10 +11,10 @@ const {
   A,
   isArray,
   isEmpty,
-  defineProperty,
   get,
   observer,
   set,
+  defineProperty,
   Helper,
   RSVP,
   computed,
@@ -40,7 +40,12 @@ const groupBy = function () {
       const itemGroup = paths.reduce(
         (previous, path) => {
           const previousItem = RSVP.resolve(previous);
-          return previousItem.then(nestedItem => get(nestedItem, path));
+          return previousItem.then((nestedItem) => {
+            if (isEmpty(nestedItem)) {
+              return undefined;
+            }
+            return get(nestedItem, path);
+          });
         }, item);
 
       const itemGroupPromise = RSVP.resolve(itemGroup);
