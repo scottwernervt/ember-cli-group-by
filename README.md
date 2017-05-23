@@ -3,8 +3,6 @@
 Group by helper that supports async nested properties and assignment of a default category if the
 property is missing. It is a drop in replacement for 
 [ember-composable-helpers:group-by](https://github.com/DockYard/ember-composable-helpers#group-by).
-It is for [Ember 2.10 (and higher)](https://github.com/scottwernervt/ember-cli-group-by/issues/2) 
-applications.
 
 ```handlebars
 {{#each-in (group-by-path "property" array "Missing Category") as |category items|}}
@@ -17,6 +15,9 @@ applications.
 {{/each-in}}
 ```
 ## Installation
+
+Requires Ember 2.10 or higher, see 
+[Issue #2](https://github.com/scottwernervt/ember-cli-group-by/issues/2).
 
 ```no-highlight
 ember install ember-cli-group-by
@@ -107,35 +108,7 @@ export default Model.extend({
 {{#each-in (group-by-path "category.name" user.cart "Other") as |category products|}}
   <h3>{{category}}</h3>
   <ul>
-    {{#each products as |product|}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
     {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
-    {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
-    {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
-    {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}
     	<li>{{product.name}}</li>
     {{/each}}
   </ul>
