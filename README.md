@@ -1,5 +1,28 @@
 # ember-cli-group-by
 
+[![Latest NPM release][npm-badge]][npm-badge-url]
+[![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![Code Climate][codeclimate-badge]][codeclimate-badge-url]
+[![Ember Observer Score][ember-observer-badge]][ember-observer-badge-url]
+[![License][license-badge]][license-badge-url]
+[![Dependencies][dependencies-badge]][dependencies-badge-url] 
+[![Dev Dependencies][devDependencies-badge]][devDependencies-badge-url]
+
+[npm-badge]: https://img.shields.io/npm/v/ember-cli-group-by.svg
+[npm-badge-url]: https://www.npmjs.com/package/ember-cli-group-by
+[travis-badge]: https://img.shields.io/travis/scottwernervt/ember-cli-group-by/master.svg
+[travis-badge-url]: https://travis-ci.org/scottwernervt/ember-cli-group-by
+[codeclimate-badge]: https://img.shields.io/codeclimate/github/scottwernervt/ember-cli-group-by.svg
+[codeclimate-badge-url]: https://codeclimate.com/github/scottwernervt/ember-cli-group-by
+[ember-observer-badge]: http://emberobserver.com/badges/ember-cli-group-by.svg
+[ember-observer-badge-url]: http://emberobserver.com/addons/ember-cli-group-by
+[license-badge]: https://img.shields.io/npm/l/ember-cli-group-by.svg
+[license-badge-url]: LICENSE.md
+[dependencies-badge]: https://img.shields.io/david/scottwernervt/ember-cli-group-by.svg
+[dependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by
+[devDependencies-badge]: https://img.shields.io/david/dev/scottwernervt/ember-cli-group-by.svg
+[devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by#info=devDependencies
+
 Group by helper that supports async nested properties and assignment of a default category if the
 property is missing. It is a drop in replacement for 
 [ember-composable-helpers:group-by](https://github.com/DockYard/ember-composable-helpers#group-by).
