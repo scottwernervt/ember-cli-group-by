@@ -5,6 +5,7 @@ import hbs from 'htmlbars-inline-precompile';
 const {
   A,
   set,
+  RSVP,
   run,
 } = Ember;
 
@@ -30,6 +31,24 @@ test('It groups by given single path', function (assert) {
   assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
 });
 
+test('It groups by given single async path', function (assert) {
+  set(this, 'model', RSVP.all(A([
+    RSVP.resolve({ category: 'A', name: 'a' }),
+    RSVP.resolve({ category: 'B', name: 'c' }),
+    RSVP.resolve({ category: 'A', name: 'b' }),
+    RSVP.resolve({ category: 'B', name: 'd' })
+  ])));
+
+  this.render(hbs`
+    {{~#each-in (group-by-path 'category' model) as |category entries|~}}
+      {{~category~}}
+      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+    {{~/each-in~}}
+  `);
+
+  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
+});
+
 test('It groups by given nested path', function (assert) {
   set(this, 'array', A([
     { category: { type: 'A' }, name: 'a' },
@@ -40,6 +59,24 @@ test('It groups by given nested path', function (assert) {
 
   this.render(hbs`
     {{~#each-in (group-by-path 'category.type' array) as |category entries|~}}
+      {{~category~}}
+      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+    {{~/each-in~}}
+  `);
+
+  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
+});
+
+test('It groups by given nested async path', function (assert) {
+  set(this, 'model', RSVP.all(A([
+    RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'a' }),
+    RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'c' }),
+    RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'b' }),
+    RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'd' })
+  ])));
+
+  this.render(hbs`
+    {{~#each-in (group-by-path 'category.type' model) as |category entries|~}}
       {{~category~}}
       {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
     {{~/each-in~}}
