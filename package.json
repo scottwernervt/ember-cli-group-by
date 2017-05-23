@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-group-by",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An Ember.js helper for grouping objects by async properties.",
   "keywords": [
     "ember-addon",
@@ -13,9 +13,15 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/scottwernervt/ember-cli-group-by",
-  "bugs": "https://github.com/scottwernervt/ember-cli-group-by/issues",
   "homepage": "https://github.com/scottwernervt/ember-cli-group-by",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scottwernervt/ember-cli-group-by.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/scottwernervt/ember-cli-group-by/issues",
+    "email" : "scott.werner.vt@gmail.com"
+  },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
