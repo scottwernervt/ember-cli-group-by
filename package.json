@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-group-by",
   "version": "0.0.1",
-  "description": "An Ember.js helper for grouping objects by async properties.",
+  "description": "An Ember.js helper for grouping objects by nested async properties.",
   "keywords": [
     "ember-addon",
     "helpers",
