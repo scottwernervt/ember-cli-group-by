@@ -8,7 +8,11 @@
     "group-by"
   ],
   "license": "MIT",
-  "author": "Scott Werner <scott.werner.vt@gmail.com>",
+  "author": {
+    "name": "Scott Werner",
+    "email": "scott.werner.vt@gmail.com",
+    "url": "https://github.com/scottwernervt/"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -19,8 +23,8 @@
     "url": "https://github.com/scottwernervt/ember-cli-group-by.git"
   },
   "bugs": {
-    "url" : "https://github.com/scottwernervt/ember-cli-group-by/issues",
-    "email" : "scott.werner.vt@gmail.com"
+    "url": "https://github.com/scottwernervt/ember-cli-group-by/issues",
+    "email": "scott.werner.vt@gmail.com"
   },
   "scripts": {
     "build": "ember build",
