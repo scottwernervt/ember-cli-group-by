@@ -3,16 +3,22 @@ language: node_js
 node_js:
   - "6"
 
-sudo: false
+sudo: required
+dist: trusty
+
+addons:
+  apt:
+    packages:
+      - google-chrome-stable
 
 cache:
-  directories:
-    - $HOME/.npm
+  yarn: true
 
 env:
   # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
-  - EMBER_TRY_SCENARIO=ember-lts-2.4
-  - EMBER_TRY_SCENARIO=ember-lts-2.8
+  #  - EMBER_TRY_SCENARIO=ember-lts-2.4
+  #  - EMBER_TRY_SCENARIO=ember-lts-2.8
+  - EMBER_TRY_SCENARIO=ember-2.10
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
@@ -24,8 +30,14 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 before_install:
-  - npm config set spin false
-  - npm install -g phantomjs-prebuilt
+  # Repo for Yarn
+  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+  - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+  - sudo apt-get update -qq
+  - sudo apt-get install -y -qq yarn
+  - yarn global add phantomjs-prebuilt
+#  - npm config set spin false
+#  - npm install -g phantomjs-prebuilt
   - phantomjs --version
 
 install:
