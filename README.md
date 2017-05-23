@@ -1,9 +1,12 @@
 # ember-cli-group-by
 
 Group by helper that supports async nested properties and assignment of a default category if the
-property is missing. It is a drop in replacement for [ember-composable-helpers:group-by](https://github.com/DockYard/ember-composable-helpers#group-by).
+property is missing. It is a drop in replacement for 
+[ember-composable-helpers:group-by](https://github.com/DockYard/ember-composable-helpers#group-by).
+It is for [Ember 2.10 (and higher)](https://github.com/scottwernervt/ember-cli-group-by/issues/2) 
+applications.
 
-```hbs
+```handlebars
 {{#each-in (group-by-path "property" array "Missing Category") as |category items|}}
   <h3>{{category}}</h3>
   <ul>
@@ -22,9 +25,9 @@ ember install ember-cli-group-by
 
 ### Basic
 
-```js
+```javascript
 export default Ember.Controller.extend({
-  shoppingCart: Ember.A([
+  cart: Ember.A([
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
@@ -34,8 +37,8 @@ export default Ember.Controller.extend({
 });
 ```
 
-```hbs
-{{#each-in (group-by-path "category" shoppingCart) as |category products|}}
+```handlebars
+{{#each-in (group-by-path "category" cart) as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
@@ -48,9 +51,9 @@ export default Ember.Controller.extend({
 
 A default category can be set as the 3rd parameter passed to `group-by-path`. Any item that is missing the `category` property or its property is `undefined` or `null` will be grouped into this category.
 
-```js
+```javascript
 export default Ember.Controller.extend({
-  shoppingCart: Ember.A([
+  cart: Ember.A([
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
@@ -62,8 +65,8 @@ export default Ember.Controller.extend({
 });
 ```
 
-```hbs
-{{#each-in (group-by-path "category" shoppingCart "Other") as |category products|}}
+```handlebars
+{{#each-in (group-by-path "category" cart "Other") as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
@@ -72,13 +75,13 @@ export default Ember.Controller.extend({
   </ul>
 {{/each-in}}
 ```
+
 ### Async Relationship Property
 
 The group by property can be a nested `belongsTo` relationship that is loaded asynchronously. Check 
-out the example at 
-[ember-twiddle](https://ember-twiddle.com/caf15c9b204e04123d6b1e5e7a06ad3a?openFiles=helpers.group-by-path.js%2C).
+out the example at [ember-twiddle](https://ember-twiddle.com/caf15c9b204e04123d6b1e5e7a06ad3a).
 
-```js
+```javascript
 // models/user.js
 export default Model.extend({
   fullname: attr('string'),
@@ -101,7 +104,31 @@ export default Model.extend({
 ```
 
 ```handlebars
-{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
+{{#each-in (group-by-path "category.name" user.cart "Other") as |category products|}}
+  <h3>{{category}}</h3>
+  <ul>
+    {{#each products as |product|}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
+  <h3>{{category}}</h3>
+  <ul>
+    {{#each products as |product|}}
+    	<li>{{product.name}}</li>
+    {{/each}}
+  </ul>
+{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
+  <h3>{{category}}</h3>
+  <ul>
+    {{#each products as |product|}}
+    	<li>{{product.name}}</li>
+    {{/each}}
+  </ul>
+{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
+  <h3>{{category}}</h3>
+  <ul>
+    {{#each products as |product|}}
+    	<li>{{product.name}}</li>
+    {{/each}}
+  </ul>
+{{/each-in}}{{#each-in (group-by-path "category.name" user.cart) as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
@@ -109,13 +136,18 @@ export default Model.extend({
     {{/each}}
   </ul>
 {{/each-in}}
+    	<li>{{product.name}}</li>
+    {{/each}}
+  </ul>
+{{/each-in}}
 ```
+
 ### Extra
 
 The helper can be used with [ember-composable-helpers](https://github.com/DockYard/ember-composable-helpers):
 
 ```handlebars
-{{#each-in (group-by "category" (sort-by "category" "name" shoppingCart)) as |category products|}}
+{{#each-in (group-by "category" (sort-by "category" "name" cart)) as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
