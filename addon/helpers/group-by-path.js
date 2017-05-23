@@ -5,7 +5,6 @@
  * https://github.com/DockYard/ember-composable-helpers/blob/master/addon/helpers/group-by.js
  * */
 import Ember from 'ember';
-import DS from 'ember-data';
 
 const {
   A,
@@ -14,16 +13,16 @@ const {
   get,
   observer,
   set,
-  defineProperty,
+  ObjectProxy,
+  PromiseProxyMixin,
   Helper,
   RSVP,
+  defineProperty,
   computed,
   run,
 } = Ember;
 
-const {
-  PromiseObject,
-} = DS;
+const PromiseObject = ObjectProxy.extend(PromiseProxyMixin);
 
 const groupBy = function () {
   const byPath = get(this, 'byPath');
