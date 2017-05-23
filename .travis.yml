@@ -15,7 +15,6 @@ cache:
   yarn: true
 
 env:
-  # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
   #  - EMBER_TRY_SCENARIO=ember-lts-2.4
   #  - EMBER_TRY_SCENARIO=ember-lts-2.8
   - EMBER_TRY_SCENARIO=ember-2.10
@@ -42,7 +41,6 @@ before_install:
 
 install:
   - yarn install --no-lockfile
-#  - npm install
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
