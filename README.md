@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
-    { name: 'Tomato', category: 'Vegetable' },
+    { name: 'Lettuce', category: 'Vegetable' },
     { name: 'Broccoli', category: 'Vegetable' },
   ]),
 });
@@ -81,7 +81,7 @@ export default Ember.Controller.extend({
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
-    { name: 'Tomato', category: 'Vegetable' },
+    { name: 'Lettuce', category: 'Vegetable' },
     { name: 'Broccoli', category: 'Vegetable' },
     { name: 'Salt', category: null },
     { name: 'Sugar' },
