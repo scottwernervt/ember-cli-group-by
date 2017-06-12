@@ -143,7 +143,7 @@ export default Model.extend({
 The helper can be used with [ember-composable-helpers](https://github.com/DockYard/ember-composable-helpers):
 
 ```handlebars
-{{#each-in (group-by "category" (sort-by "category" "name" cart)) as |category products|}}
+{{#each-in (group-by-path "category" (sort-by "category" "name" cart)) as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
