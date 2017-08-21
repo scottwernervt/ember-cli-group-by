@@ -7,23 +7,28 @@
 import Ember from 'ember';
 
 const {
-  A,
-  isArray,
-  isEmpty,
-  get,
-  observer,
-  set,
   ObjectProxy,
   PromiseProxyMixin,
   Helper,
   RSVP,
-  defineProperty,
   computed,
+  defineProperty,
   run,
+  observer,
+  A,
+  isArray,
+  isEmpty,
+  get,
+  set,
 } = Ember;
 
 const PromiseObject = ObjectProxy.extend(PromiseProxyMixin);
 
+/**
+ * Group by function that is called by the computed property on the helper.
+ *
+ * @private
+ */
 const groupBy = function () {
   const byPath = get(this, 'byPath');
   const array = get(this, 'array');
@@ -67,8 +72,21 @@ const groupBy = function () {
   });
 };
 
+/**
+ * The group-by-path handlebars helper.
+ *
+ * @extends Ember.Helper
+ */
 export default Helper.extend({
-  compute([byPath, array, missing]) {
+  /**
+   * Group items in an array by property.
+   *
+   * @param {string} byPath - Property to group by.
+   * @param {Ember.Object[]} array - Items
+   * @param {string} [missing] - Default category.
+   * @return {Ember.Object} - Grouped items.
+   */
+  compute([byPath, array, missing] /*, hash */) {
     set(this, 'byPath', byPath);
     set(this, 'array', array);
     set(this, 'missing', missing);
@@ -83,7 +101,11 @@ export default Helper.extend({
     return get(this, 'content');
   },
 
-  // eslint-disable-next-line ember/no-observers
+
+  /** Watch for changes and update nested computed properties.
+   *
+   * @private
+   */
   paramsDidChanged: observer('byPath', 'missing', 'array.[]', function () {
     const byPath = get(this, 'byPath');
 
@@ -111,7 +133,10 @@ export default Helper.extend({
     run.once(this, this.recompute);
   }),
 
-  // eslint-disable-next-line ember/no-observers
+  /** Force recomputation on content change.
+   *
+   * @private
+   */
   contentDidChange: observer('content.[]', function () {
     this.recompute();
   }),
