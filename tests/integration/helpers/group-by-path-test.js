@@ -1,20 +1,16 @@
-import Ember from 'ember';
+import { A as emberArray } from '@ember/array';
+import { set } from '@ember/object';
+import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-
-const {
-  A,
-  set,
-  RSVP,
-  run,
-} = Ember;
+import RSVP from 'rsvp';
 
 moduleForComponent('group-by-path', 'helper:group-by-path', {
   integration: true
 });
 
 test('It groups by given single path', function (assert) {
-  set(this, 'array', A([
+  set(this, 'array', emberArray([
     { category: 'A', name: 'a' },
     { category: 'B', name: 'c' },
     { category: 'A', name: 'b' },
@@ -32,7 +28,7 @@ test('It groups by given single path', function (assert) {
 });
 
 test('It groups by given single async path', function (assert) {
-  set(this, 'model', RSVP.all(A([
+  set(this, 'model', RSVP.all(emberArray([
     RSVP.resolve({ category: 'A', name: 'a' }),
     RSVP.resolve({ category: 'B', name: 'c' }),
     RSVP.resolve({ category: 'A', name: 'b' }),
@@ -50,7 +46,7 @@ test('It groups by given single async path', function (assert) {
 });
 
 test('It groups by given nested path', function (assert) {
-  set(this, 'array', A([
+  set(this, 'array', emberArray([
     { category: { type: 'A' }, name: 'a' },
     { category: { type: 'B' }, name: 'c' },
     { category: { type: 'A' }, name: 'b' },
@@ -68,7 +64,7 @@ test('It groups by given nested path', function (assert) {
 });
 
 test('It groups by given nested async path', function (assert) {
-  set(this, 'model', RSVP.all(A([
+  set(this, 'model', RSVP.all(emberArray([
     RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'a' }),
     RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'c' }),
     RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'b' }),
@@ -86,7 +82,7 @@ test('It groups by given nested async path', function (assert) {
 });
 
 test('It groups by given integer path', function (assert) {
-  set(this, 'array', A([
+  set(this, 'array', emberArray([
     { category: 1, name: 'a' },
     { category: 2, name: 'c' },
     { category: 1, name: 'b' },
@@ -104,7 +100,7 @@ test('It groups by given integer path', function (assert) {
 });
 
 test('It groups missing path into unknown category', function (assert) {
-  set(this, 'array', A([
+  set(this, 'array', emberArray([
     { category: 'A', name: 'a' },
     { name: 'c' },
     { category: 'B', name: 'b' },
@@ -122,7 +118,7 @@ test('It groups missing path into unknown category', function (assert) {
 });
 
 test('It watches for changes', function (assert) {
-  const array = A([
+  const array = emberArray([
     { category: 'A', name: 'a' },
     { category: 'B', name: 'c' },
     { category: 'A', name: 'b' },
@@ -144,7 +140,7 @@ test('It watches for changes', function (assert) {
 });
 
 test('It watches for nested changes', function (assert) {
-  const array = A([
+  const array = emberArray([
     { category: { type: 'A' }, name: 'a' },
     { category: { type: 'B' }, name: 'c' },
     { category: { type: 'A' }, name: 'b' },

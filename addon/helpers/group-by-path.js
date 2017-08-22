@@ -1,31 +1,19 @@
-/* group-by-path helper
- *
- * References:
- * https://gist.github.com/Asherlc/cc438c9dc13912618b8b
- * https://github.com/DockYard/ember-composable-helpers/blob/master/addon/helpers/group-by.js
- * */
-import Ember from 'ember';
-
-const {
-  ObjectProxy,
-  PromiseProxyMixin,
-  Helper,
-  RSVP,
-  computed,
-  defineProperty,
-  run,
-  observer,
-  A,
-  isArray,
-  isEmpty,
-  get,
-  set,
-} = Ember;
+import { A as emberArray, isArray as isEmberArray } from '@ember/array';
+import Helper from '@ember/component/helper';
+import EmberObject, { computed, defineProperty, get, observer, set } from '@ember/object';
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+import ObjectProxy from '@ember/object/proxy';
+import { run } from '@ember/runloop';
+import { isEmpty } from '@ember/utils';
+import RSVP from 'rsvp';
 
 const PromiseObject = ObjectProxy.extend(PromiseProxyMixin);
 
 /**
  * Group by function that is called by the computed property on the helper.
+ *
+ * Reference:
+ * https://gist.github.com/Asherlc/cc438c9dc13912618b8b
  *
  * @private
  */
@@ -35,7 +23,7 @@ const groupBy = function () {
   const missing = get(this, 'missing');
 
   const paths = byPath.split('.');
-  const groups = Ember.Object.create({});
+  const groups = EmberObject.create({});
 
   const arrayPromise = RSVP.resolve(array);
 
@@ -58,8 +46,8 @@ const groupBy = function () {
         const groupKey = isEmpty(groupName) ? missing : groupName;
         let group = get(groups, `${groupKey}`); // support non strings
 
-        if (!isArray(group)) {
-          group = A();
+        if (!isEmberArray(group)) {
+          group = emberArray();
           groups[`${groupKey}`] = group;
         }
 
@@ -74,6 +62,9 @@ const groupBy = function () {
 
 /**
  * The group-by-path handlebars helper.
+ *
+ * Reference:
+ * https://github.com/DockYard/ember-composable-helpers/blob/master/addon/helpers/group-by.js
  *
  * @extends Ember.Helper
  */
@@ -101,8 +92,8 @@ export default Helper.extend({
     return get(this, 'content');
   },
 
-
-  /** Watch for changes and update nested computed properties.
+  /**
+   * Watch for changes and update nested computed properties.
    *
    * @private
    */
@@ -133,7 +124,8 @@ export default Helper.extend({
     run.once(this, this.recompute);
   }),
 
-  /** Force recomputation on content change.
+  /**
+   * Force recomputation on content change.
    *
    * @private
    */
