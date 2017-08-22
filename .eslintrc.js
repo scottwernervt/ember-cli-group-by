@@ -6,12 +6,12 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended',
+    'plugin:ember/recommended'
   ],
   env: {
     browser: true
   },
   rules: {
-    'ember/no-observers': 0,
+    'ember/no-observers': 0
   }
 };
