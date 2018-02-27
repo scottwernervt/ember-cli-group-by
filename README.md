@@ -12,7 +12,7 @@
 [npm-badge-url]: https://www.npmjs.com/package/ember-cli-group-by
 [travis-badge]: https://img.shields.io/travis/scottwernervt/ember-cli-group-by/master.svg
 [travis-badge-url]: https://travis-ci.org/scottwernervt/ember-cli-group-by
-[codeclimate-badge]: https://img.shields.io/codeclimate/github/scottwernervt/ember-cli-group-by.svg
+[codeclimate-badge]: https://api.codeclimate.com/v1/badges/24b82ae0cd54584332e2/maintainability
 [codeclimate-badge-url]: https://codeclimate.com/github/scottwernervt/ember-cli-group-by
 [ember-observer-badge]: http://emberobserver.com/badges/ember-cli-group-by.svg
 [ember-observer-badge-url]: http://emberobserver.com/addons/ember-cli-group-by
