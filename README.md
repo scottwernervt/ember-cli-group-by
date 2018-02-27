@@ -18,10 +18,10 @@
 [ember-observer-badge-url]: http://emberobserver.com/addons/ember-cli-group-by
 [license-badge]: https://img.shields.io/npm/l/ember-cli-group-by.svg
 [license-badge-url]: LICENSE.md
-[dependencies-badge]: https://img.shields.io/david/scottwernervt/ember-cli-group-by.svg
+[dependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg
 [dependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by
-[devDependencies-badge]: https://img.shields.io/david/dev/scottwernervt/ember-cli-group-by.svg
-[devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by#info=devDependencies
+[devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg?type=dev
+[devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by?type=dev
 
 Group by helper that supports async nested properties and assignment of a default category if the
 property is missing. It is a drop in replacement for 
