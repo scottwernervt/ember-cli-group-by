@@ -1,10 +1,10 @@
 # ember-cli-group-by
 
 [![Latest NPM release][npm-badge]][npm-badge-url]
-[![TravisCI Build Status][travis-badge]][travis-badge-url]
-[![Code Climate][codeclimate-badge]][codeclimate-badge-url]
-[![Ember Observer Score][ember-observer-badge]][ember-observer-badge-url]
 [![License][license-badge]][license-badge-url]
+[![TravisCI Build Status][travis-badge]][travis-badge-url]
+[![Ember Observer Score][ember-observer-badge]][ember-observer-badge-url]
+[![Code Climate][codeclimate-badge]][codeclimate-badge-url]
 [![Dependencies][dependencies-badge]][dependencies-badge-url] 
 [![Dev Dependencies][devDependencies-badge]][devDependencies-badge-url]
 
