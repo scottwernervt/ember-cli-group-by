@@ -7,7 +7,7 @@ import { run } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import RSVP from 'rsvp';
 
-const PromiseObject = ObjectProxy.extend(PromiseProxyMixin);
+const PromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 /**
  * Group by function that is called by the computed property on the helper.
@@ -55,7 +55,7 @@ const groupBy = function () {
       });
     })));
 
-  return PromiseObject.create({
+  return PromiseProxy.create({
     promise: promise.then(() => groups),
   });
 };
