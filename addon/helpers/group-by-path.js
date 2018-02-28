@@ -70,29 +70,6 @@ const groupBy = function () {
  */
 export default Helper.extend({
   /**
-   * Group items in an array by property.
-   *
-   * @param {string} byPath - Property to group by.
-   * @param {Ember.Object[]} array - Items
-   * @param {string} [missing] - Default category.
-   * @return {Ember.Object} - Grouped items.
-   */
-  compute([byPath, array, missing] /*, hash */) {
-    set(this, 'byPath', byPath);
-    set(this, 'array', array);
-    set(this, 'missing', missing);
-
-    // TODO: CODE: _nestedX cp does not fire unless it is called at least once.
-    Object.keys(this).forEach((property) => {
-      if (property.startsWith('_nested')) {
-        get(this, property);
-      }
-    });
-
-    return get(this, 'content');
-  },
-
-  /**
    * Watch for changes and update nested computed properties.
    *
    * @private
@@ -132,4 +109,27 @@ export default Helper.extend({
   contentDidChange: observer('content.[]', function () {
     this.recompute();
   }),
+
+  /**
+   * Group items in an array by property.
+   *
+   * @param {string} byPath - Property to group by.
+   * @param {Ember.Object[]} array - Items
+   * @param {string} [missing] - Default category.
+   * @return {Ember.Object} - Grouped items.
+   */
+  compute([byPath, array, missing] /*, hash */) {
+    set(this, 'byPath', byPath);
+    set(this, 'array', array);
+    set(this, 'missing', missing);
+
+    // TODO: CODE: _nestedX cp does not fire unless it is called at least once.
+    Object.keys(this).forEach((property) => {
+      if (property.startsWith('_nested')) {
+        get(this, property);
+      }
+    });
+
+    return get(this, 'content');
+  },
 });
