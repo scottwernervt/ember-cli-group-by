@@ -1,4 +1,4 @@
-import { A as emberArray } from '@ember/array';
+import { A as emberA } from '@ember/array';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
@@ -10,7 +10,7 @@ moduleForComponent('group-by-path', 'helper:group-by-path', {
 });
 
 test('It groups by given single path', function (assert) {
-  set(this, 'array', emberArray([
+  set(this, 'array', emberA([
     { category: 'A', name: 'a' },
     { category: 'B', name: 'c' },
     { category: 'A', name: 'b' },
@@ -18,9 +18,9 @@ test('It groups by given single path', function (assert) {
   ]));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category' array) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -28,7 +28,7 @@ test('It groups by given single path', function (assert) {
 });
 
 test('It groups by given single async path', function (assert) {
-  set(this, 'model', RSVP.all(emberArray([
+  set(this, 'array', RSVP.all(emberA([
     RSVP.resolve({ category: 'A', name: 'a' }),
     RSVP.resolve({ category: 'B', name: 'c' }),
     RSVP.resolve({ category: 'A', name: 'b' }),
@@ -36,9 +36,9 @@ test('It groups by given single async path', function (assert) {
   ])));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category' model) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -46,7 +46,7 @@ test('It groups by given single async path', function (assert) {
 });
 
 test('It groups by given nested path', function (assert) {
-  set(this, 'array', emberArray([
+  set(this, 'array', emberA([
     { category: { type: 'A' }, name: 'a' },
     { category: { type: 'B' }, name: 'c' },
     { category: { type: 'A' }, name: 'b' },
@@ -54,9 +54,9 @@ test('It groups by given nested path', function (assert) {
   ]));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category.type' array) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -64,7 +64,7 @@ test('It groups by given nested path', function (assert) {
 });
 
 test('It groups by given nested async path', function (assert) {
-  set(this, 'model', RSVP.all(emberArray([
+  set(this, 'array', RSVP.all(emberA([
     RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'a' }),
     RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'c' }),
     RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'b' }),
@@ -72,9 +72,9 @@ test('It groups by given nested async path', function (assert) {
   ])));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category.type' model) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -82,7 +82,7 @@ test('It groups by given nested async path', function (assert) {
 });
 
 test('It groups by given integer path', function (assert) {
-  set(this, 'array', emberArray([
+  set(this, 'array', emberA([
     { category: 1, name: 'a' },
     { category: 2, name: 'c' },
     { category: 1, name: 'b' },
@@ -90,9 +90,9 @@ test('It groups by given integer path', function (assert) {
   ]));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category' array) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -100,7 +100,13 @@ test('It groups by given integer path', function (assert) {
 });
 
 test('It groups missing path into unknown category', function (assert) {
-  set(this, 'array', emberArray([
+  set(this, 'actions', {
+    setUnknownGroup(value) {
+      return value === undefined ? 'C' : value;
+    },
+  });
+
+  set(this, 'array', emberA([
     { category: 'A', name: 'a' },
     { name: 'c' },
     { category: 'B', name: 'b' },
@@ -108,9 +114,9 @@ test('It groups missing path into unknown category', function (assert) {
   ]));
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category' array 'C') as |category entries|~}}
+    {{~#each-in (group-by-path array 'category' (action "setUnknownGroup")) as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -118,7 +124,7 @@ test('It groups missing path into unknown category', function (assert) {
 });
 
 test('It watches for changes', function (assert) {
-  const array = emberArray([
+  const array = emberA([
     { category: 'A', name: 'a' },
     { category: 'B', name: 'c' },
     { category: 'A', name: 'b' },
@@ -128,9 +134,9 @@ test('It watches for changes', function (assert) {
   set(this, 'array', array);
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category' array) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
@@ -140,7 +146,7 @@ test('It watches for changes', function (assert) {
 });
 
 test('It watches for nested changes', function (assert) {
-  const array = emberArray([
+  const array = emberA([
     { category: { type: 'A' }, name: 'a' },
     { category: { type: 'B' }, name: 'c' },
     { category: { type: 'A' }, name: 'b' },
@@ -150,9 +156,9 @@ test('It watches for nested changes', function (assert) {
   set(this, 'array', array);
 
   this.render(hbs`
-    {{~#each-in (group-by-path 'category.type' array) as |category entries|~}}
+    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
       {{~category~}}
-      {{~#each entries as |entry|~}}{{~entry.name~}}{{~/each~}}
+      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
     {{~/each-in~}}
   `);
 
