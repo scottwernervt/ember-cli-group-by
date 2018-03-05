@@ -8,23 +8,6 @@ import RSVP from 'rsvp';
 const PromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 /**
- *  Helper to get the group's key name.
- *
- * @method getGroupKey
- * @param {String} value
- * @param {Function} getter
- * @returns {*} The group key.
- * @private
- */
-function getGroupKey(value, getter) {
-  if (getter) {
-    return getter(value);
-  }
-
-  return value;
-}
-
-/**
  * Groups the array by nested properties helper for computed property and helper.
  *
  * References: https://gist.github.com/Asherlc/cc438c9dc13912618b8b
@@ -37,26 +20,19 @@ function getGroupKey(value, getter) {
  * @public
  */
 export default function groupBy(array, key, definition) {
-  const paths = key.split('.');
-  const groups = EmberObject.create({});
   const arrayPromise = RSVP.resolve(array);
+  const groupPromise = arrayPromise.then(items => {
+    const groups = EmberObject.create({});
 
-  const groupPromise = arrayPromise.then(items =>
-    RSVP.all(items.map((item) => {
-      const itemGroup = paths.reduce(
-        (previous, path) => {
-          const previousItem = RSVP.resolve(previous);
-          return previousItem.then((nestedItem) => {
-            if (isEmpty(nestedItem)) {
-              return undefined;
-            }
-            return get(nestedItem, path);
-          });
-        }, item);
+    items.map((item) => {
+      const groupName = key.split('.').reduce((previous, path) => {
+        const itemPromise = RSVP.resolve(previous);
+        return itemPromise.then(item => isEmpty(item) ? undefined : get(item, path));
+      }, item);
 
-      return RSVP.resolve(itemGroup).then((groupName) => {
-        const groupKey = getGroupKey(groupName, definition);
-        let currentGroup = get(groups, `${groupKey}`); // support non strings
+      groupName.then((groupName) => {
+        const groupKey = definition ? definition(groupName) : groupName;
+        let currentGroup = get(groups, `${groupKey}`);
 
         if (!isArray(currentGroup)) {
           currentGroup = emberA();
@@ -65,9 +41,12 @@ export default function groupBy(array, key, definition) {
 
         currentGroup.pushObject(item);
       });
-    })));
+    });
+
+    return groups;
+  });
 
   return PromiseProxy.create({
-    promise: groupPromise.then(() => groups),
+    promise: groupPromise,
   });
 }
