@@ -1,6 +1,5 @@
 import { A as emberA } from '@ember/array';
 import Controller from '@ember/controller';
-import { set } from '@ember/object';
 
 import { groupByPath } from 'ember-cli-group-by/macros';
 
