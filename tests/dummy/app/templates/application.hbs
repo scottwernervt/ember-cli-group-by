@@ -1,5 +1,59 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h5 class="title is-5">Single Path Computed</h5>
+        <div class="content">
+          {{#each-in singleGroup as |category items|}}
+            <b>{{category}}</b>
+            <ul>
+              {{#each items as |item|}}
+                <li>{{item.name}}</li>
+              {{/each}}
+            </ul>
+          {{/each-in}}
+        </div>
+      </div>
+      <div class="column">
+        <h5 class="title is-5">Single Path Helper</h5>
+        <div class="content">
+          {{#each-in (group-by-path single "category" (action "toYear")) as |category items|}}
+            <b>{{category}}</b>
+            <ul>
+              {{#each items as |item|}}
+                <li>{{item.name}}</li>
+              {{/each}}
+            </ul>
+          {{/each-in}}
+        </div>
+      </div>
 
-{{outlet}}
+      <div class="column">
+        <h5 class="title is-5">Nested Path Computed</h5>
+        <div class="content">
+          {{#each-in doubleGroup as |category items|}}
+            <b>{{category}}</b>
+            <ul>
+              {{#each items as |item|}}
+                <li>{{item.name}}</li>
+              {{/each}}
+            </ul>
+          {{/each-in}}
+        </div>
+      </div>
+      <div class="column">
+        <h5 class="title is-5">Nested Path Helper</h5>
+        <div class="content">
+          {{#each-in (group-by-path double "category.type") as |category items|}}
+            <b>{{category}}</b>
+            <ul>
+              {{#each items as |item|}}
+                <li>{{item.name}}</li>
+              {{/each}}
+            </ul>
+          {{/each-in}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
