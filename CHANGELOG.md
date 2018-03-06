@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.0.5](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.5) (2018-03-06)
+
+- Add new group by computed property.
+- Private nested computed properties do not fire when changes made in array. [\#1](https://github.com/scottwernervt/ember-cli-group-by/issues/1)
+
 ## [v0.0.4](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.4) (2017-12-01)
 
 - Upgrade to ember-cli@2.17.0 and ember-source@2.17.0.
