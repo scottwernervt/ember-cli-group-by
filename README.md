@@ -23,7 +23,8 @@
 [devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg?type=dev
 [devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by?type=dev
 
-A group by computed property and helper that supports nested properties, e.g. model with a `belongsTo` relationship,
+A group by computed property and helper that supports nested properties, e.g. model with a 
+`belongsTo` relationship.
 
 ```javascript
 import Controller from '@ember/controller';
@@ -208,8 +209,6 @@ export default Model.extend({
   name: attr('string'),
 });
 ```
-
-**Computed property**
 
 ```javascript
 import Controller from '@ember/controller';
