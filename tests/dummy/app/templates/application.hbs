@@ -17,7 +17,7 @@
       <div class="column">
         <h5 class="title is-5">Single Path Helper</h5>
         <div class="content">
-          {{#each-in (group-by-path single "category" (action "director")) as |category items|}}
+          {{#each-in (group-by-path single "category" (action "toYear")) as |category items|}}
             <b>{{category}}</b>
             <ul>
               {{#each items as |item|}}
@@ -53,18 +53,6 @@
             </ul>
           {{/each-in}}
         </div>
-      </div>
-    </div>
-
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-link" {{action "addSingleItem"}}>Add single item</button>
-      </div>
-      <div class="control">
-        <button class="button is-link" {{action "addDoubleItem"}}>Add double item</button>
-      </div>
-      <div class="control">
-        <button class="button is-text"{{action "editItem"}}>Edit double item</button>
       </div>
     </div>
   </div>
