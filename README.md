@@ -23,7 +23,7 @@
 [devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg?type=dev
 [devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by?type=dev
 
-Group by computed property and helper that supports aysnc nested properties.
+A group by computed property and helper that supports nested properties, e.g. model with a `belongsTo` relationship,
 
 ```javascript
 import Controller from '@ember/controller';
@@ -33,6 +33,7 @@ export default Controller.extend({
   arrayGrouped: groupByPath('array', 'nested.property'),
 });
 ```
+and 
 
 ```handlebars
 {{#each-in (group-by-path array "nested.property") as |category items|}}
@@ -55,7 +56,7 @@ ember install ember-cli-group-by
 ```
 ## Usage
 
-### Basic
+### General
 
 **Computed property**
 
@@ -183,8 +184,8 @@ export default Controller.extend({
 
 ### Async Relationship Property
 
-The group by property can be a nested `belongsTo` relationship that is loaded asynchronously. Check 
-out the example at [ember-twiddle](https://ember-twiddle.com/caf15c9b204e04123d6b1e5e7a06ad3a).
+The group by property path can be a nested `belongsTo` relationship that is loaded asynchronously. 
+Check out the example at [ember-twiddle](https://ember-twiddle.com/caf15c9b204e04123d6b1e5e7a06ad3a).
 
 ```javascript
 // models/user.js
@@ -219,9 +220,6 @@ import { groupByPath } from 'ember-cli-group-by/macros';
 export default Controller.extend({
   user: alias('model'),
   cart: alias('user.cart'),
-  
-  cartGrouped: groupByPath('cart', 'category', function (value) {
-    return isNone(value) ? 'Other' :  value;
-  }),
+  cartGrouped: groupByPath('cart', 'category.name'),
 });
 ```
