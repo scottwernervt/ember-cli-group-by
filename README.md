@@ -34,7 +34,6 @@ export default Controller.extend({
   arrayGrouped: groupByPath('array', 'nested.property'),
 });
 ```
-and 
 
 ```handlebars
 {{#each-in (group-by-path array "nested.property") as |category items|}}
@@ -55,6 +54,7 @@ Requires Ember 2.10 or higher, see
 ```no-highlight
 ember install ember-cli-group-by
 ```
+
 ## Usage
 
 ### General
@@ -219,6 +219,8 @@ import { groupByPath } from 'ember-cli-group-by/macros';
 export default Controller.extend({
   user: alias('model'),
   cart: alias('user.cart'),
-  cartGrouped: groupByPath('cart', 'category.name'),
+  cartGrouped: groupByPath('cart', 'category.name', function (value) {
+    return isNone(value) ? 'Other' :  value;
+  }),
 });
 ```
