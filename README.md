@@ -23,12 +23,19 @@
 [devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg?type=dev
 [devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by?type=dev
 
-Group by helper that supports async nested properties and assignment of a default category if the
-property is missing. It is a drop in replacement for 
-[ember-composable-helpers:group-by](https://github.com/DockYard/ember-composable-helpers#group-by).
+Group by computed property and helper that supports aysnc nested properties.
+
+```javascript
+import Controller from '@ember/controller';
+import { groupByPath } from 'ember-cli-group-by/macros';
+
+export default Controller.extend({
+  arrayGrouped: groupByPath('array', 'nested.property'),
+});
+```
 
 ```handlebars
-{{#each-in (group-by-path "property" array "Missing Category") as |category items|}}
+{{#each-in (group-by-path array "nested.property") as |category items|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each items as |item|}}
@@ -37,6 +44,7 @@ property is missing. It is a drop in replacement for
   </ul>
 {{/each-in}}
 ```
+
 ## Installation
 
 Requires Ember 2.10 or higher, see 
@@ -49,20 +57,27 @@ ember install ember-cli-group-by
 
 ### Basic
 
+**Computed property**
+
 ```javascript
-export default Ember.Controller.extend({
-  cart: Ember.A([
+import Controller from '@ember/controller';
+import { A as emberA } from '@ember/array';
+import { groupByPath } from 'ember-cli-group-by/macros';
+
+export default Controller.extend({
+  cart: emberA([
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
     { name: 'Lettuce', category: 'Vegetable' },
     { name: 'Broccoli', category: 'Vegetable' },
   ]),
+  cartGrouped: groupByPath('cart', 'category'),
 });
 ```
 
 ```handlebars
-{{#each-in (group-by-path "category" cart) as |category products|}}
+{{#each-in cartGrouped as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
@@ -71,13 +86,50 @@ export default Ember.Controller.extend({
   </ul>
 {{/each-in}}
 ```
-### Default Category
 
-A default category can be set as the 3rd parameter passed to `group-by-path`. Any item that is missing the `category` property or its property is `undefined` or `null` will be grouped into this category.
+**Handlebars helper**
 
 ```javascript
-export default Ember.Controller.extend({
-  cart: Ember.A([
+import Controller from '@ember/controller';
+import { A as emberA } from '@ember/array';
+
+export default Controller.extend({
+  cart: emberA([
+    { name: 'Cinnamon ', category: 'Spice' },
+    { name: 'Banana', category: 'Fruit' },
+    { name: 'Apple', category: 'Fruit' },
+    { name: 'Lettuce', category: 'Vegetable' },
+    { name: 'Broccoli', category: 'Vegetable' },
+  ]),
+});
+```
+
+```handlebars
+{{#each-in (group-by-path cart "category") as |category products|}}
+  <h3>{{category}}</h3>
+  <ul>
+    {{#each products as |product|}}
+    	<li>{{product.name}}</li>
+    {{/each}}
+  </ul>
+{{/each-in}}
+```
+
+### Default Category
+
+The group name for an item can be overridden by implementing a computed property function or by 
+passing a closure action to the helper.
+
+**Computed property**
+
+```javascript
+import Controller from '@ember/controller';
+import { A as emberA } from '@ember/array';
+import { isNone } from '@ember/utils';
+import { groupByPath } from 'ember-cli-group-by/macros';
+
+export default Controller.extend({
+  cart: emberA([
     { name: 'Cinnamon ', category: 'Spice' },
     { name: 'Banana', category: 'Fruit' },
     { name: 'Apple', category: 'Fruit' },
@@ -86,11 +138,40 @@ export default Ember.Controller.extend({
     { name: 'Salt', category: null },
     { name: 'Sugar' },
   ]),
+  cartGrouped: groupByPath('cart', 'category', function (value) {
+    return isNone(value) ? 'Other' :  value;
+  }),
+});
+```
+
+**Handlebars helper**
+
+```javascript
+import Controller from '@ember/controller';
+import { A as emberA } from '@ember/array';
+import { isNone } from '@ember/utils';
+
+export default Controller.extend({
+  cart: emberA([
+    { name: 'Cinnamon ', category: 'Spice' },
+    { name: 'Banana', category: 'Fruit' },
+    { name: 'Apple', category: 'Fruit' },
+    { name: 'Lettuce', category: 'Vegetable' },
+    { name: 'Broccoli', category: 'Vegetable' },
+    { name: 'Salt', category: null },
+    { name: 'Sugar' },
+  ]),
+  
+  actions: {
+    defaultCategory(value) {
+      return isNone(value) ? 'Other' :  value;
+    },
+  },
 });
 ```
 
 ```handlebars
-{{#each-in (group-by-path "category" cart "Other") as |category products|}}
+{{#each-in (group-by-path cart "category" (action "defaultCategory")) as |category products|}}
   <h3>{{category}}</h3>
   <ul>
     {{#each products as |product|}}
@@ -127,28 +208,20 @@ export default Model.extend({
 });
 ```
 
-```handlebars
-{{#each-in (group-by-path "category.name" user.cart "Other") as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
-    {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}
-```
+**Computed property**
 
-### Extra
+```javascript
+import Controller from '@ember/controller';
+import { isNone } from '@ember/utils';
+import { alias } from '@ember/object/computed';
+import { groupByPath } from 'ember-cli-group-by/macros';
 
-The helper can be used with [ember-composable-helpers](https://github.com/DockYard/ember-composable-helpers):
-
-```handlebars
-{{#each-in (group-by-path "category" (sort-by "category" "name" cart)) as |category products|}}
-  <h3>{{category}}</h3>
-  <ul>
-    {{#each products as |product|}}
-    	<li>{{product.name}}</li>
-    {{/each}}
-  </ul>
-{{/each-in}}
+export default Controller.extend({
+  user: alias('model'),
+  cart: alias('user.cart'),
+  
+  cartGrouped: groupByPath('cart', 'category', function (value) {
+    return isNone(value) ? 'Other' :  value;
+  }),
+});
 ```
