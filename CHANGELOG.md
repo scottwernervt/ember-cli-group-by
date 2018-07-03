@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.0.7](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.7) (2018-07-03)
+
+- Update ember-cli@3.2.0 and ember-source@3.2.0.
+- Update dev dependencies.
+- Remove `bower.json`.
+
+## [v0.0.6](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.6) (2018-05-07)
+
+- Upgrade to ember-source 3.1.0 and dev dependencies. 
+
 ## [v0.0.5](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.5) (2018-03-06)
 
 - Add new group by computed property.
