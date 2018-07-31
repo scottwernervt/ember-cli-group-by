@@ -20,7 +20,7 @@
 [license-badge-url]: LICENSE.md
 [dependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg
 [dependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by
-[devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by.svg?type=dev
+[devDependencies-badge]: https://david-dm.org/scottwernervt/ember-cli-group-by/dev-status.svg?theme=shields.io
 [devDependencies-badge-url]: https://david-dm.org/scottwernervt/ember-cli-group-by?type=dev
 
 A group by computed property and helper that supports nested properties, e.g. model with a 
