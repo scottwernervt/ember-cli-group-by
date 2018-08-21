@@ -1,46 +1,47 @@
-import { A as emberA } from '@ember/array';
 import EmberObject from '@ember/object';
 import { groupByPath } from 'ember-cli-group-by/macros';
-import { module, skip, test } from 'ember-qunit';
+import { module, setupTest, test } from 'ember-qunit';
 
-module('Unit | Macro | group by path', {
-  unit: true,
-});
+module('Unit | Macro | group by path', function (hooks) {
+  setupTest(hooks);
 
-const TestSingle = EmberObject.extend({
-  array: null,
-  singleGroup: groupByPath('array', 'category'),
-});
-
-test('It groups by given single path', function (assert) {
-  const subject = TestSingle.create({
-    array: emberA([
-      { name: '1', category: 'A', },
-      { name: '2', category: 'A', },
-      { name: '3', category: 'B', },
-      { name: '4', category: 'B', },
-    ]),
+  const TestSingle = EmberObject.extend({
+    items: undefined,
+    grouped: groupByPath('items', 'category'),
   });
-  return subject.get('singleGroup').then((grouped) => {
-    assert.deepEqual(Object.keys(grouped), ['A', 'B']);
-  });
-});
 
-const TestNested = EmberObject.extend({
-  array: null,
-  doubleGroup: groupByPath('array', 'category.type'),
-});
+  test('It groups by given single path', async function (assert) {
+    const subject = TestSingle.create({
+      items: [
+        { name: '1', category: 'A', },
+        { name: '2', category: 'A', },
+        { name: '3', category: 'B', },
+        { name: '4', category: 'B', },
+      ],
+    });
+    const grouped = await subject.get('grouped');
 
-skip('It groups by given nested path', function (assert) {
-  const subject = TestNested.create({
-    array: emberA([
-      { name: '1', category: { type: 'A' }, },
-      { name: '2', category: { type: 'A' }, },
-      { name: '3', category: { type: 'B' }, },
-      { name: '4', category: { type: 'B' }, },
-    ]),
+    const keys = Object.keys(grouped);
+    assert.deepEqual(keys, ['A', 'B']);
   });
-  return subject.get('doubleGroup').then((grouped) => {
-    assert.deepEqual(Object.keys(grouped), ['A', 'B']);
+
+  const TestNested = EmberObject.extend({
+    items: undefined,
+    grouped: groupByPath('items', 'category.type'),
+  });
+
+  test('It groups by given nested path', async function (assert) {
+    const subject = TestNested.create({
+      items: [
+        { name: '1', category: { type: 'A' }, },
+        { name: '2', category: { type: 'A' }, },
+        { name: '3', category: { type: 'B' }, },
+        { name: '4', category: { type: 'B' }, },
+      ],
+    });
+    const grouped = await subject.get('grouped');
+
+    const keys = Object.keys(await grouped);
+    assert.deepEqual(keys, ['A', 'B']);
   });
 });
