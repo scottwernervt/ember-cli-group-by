@@ -20,6 +20,20 @@ module.exports = {
         '--remote-debugging-port=0',
         '--window-size=1440,900'
       ].filter(Boolean)
+    },
+    chromium: {
+      mode: 'ci',
+      browser_start_timeout: 10000,
+      browser_disconnect_timeout: 10000,
+      args: [
+        '--disable-gpu',
+        '--auto-open-devtools-for-tabs',
+        '--remote-debugging-port=9222',
+        '--remote-debugging-address=0.0.0.0',
+        '--no-sandbox',
+        '--user-data-dir=/tmp',
+        '--window-size=1440,900'
+      ]
     }
   }
 };
