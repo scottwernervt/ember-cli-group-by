@@ -1,6 +1,6 @@
 import { deprecate } from '@ember/application/deprecations';
 import Helper from '@ember/component/helper';
-import { computed, defineProperty, get, observer, set } from '@ember/object';
+import { computed, defineProperty, observer } from '@ember/object';
 import { run } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import groupBy from '../utils/group-by';
@@ -20,9 +20,9 @@ export default Helper.extend({
    * @private
    */
   paramsDidChanged: observer('array.[]', 'propertyPath', 'groupDefinition', function () {
-    const array = get(this, 'array');
-    const propertyPath = get(this, 'propertyPath');
-    const groupDefinition = get(this, 'groupDefinition');
+    const array = this.get('array');
+    const propertyPath = this.get('propertyPath');
+    const groupDefinition = this.get('groupDefinition');
 
     function groupPropertyDidChange() {
       return groupBy(array, propertyPath, groupDefinition);
@@ -82,16 +82,16 @@ export default Helper.extend({
         until: '0.0.6',
       });
 
-    set(this, 'array', array);
-    set(this, 'propertyPath', propertyPath);
-    set(this, 'groupDefinition', groupDefinition);
+    this.set('array', array);
+    this.set('propertyPath', propertyPath);
+    this.set('groupDefinition', groupDefinition);
 
     Object.keys(this).forEach((property) => {
       if (property.startsWith('_chain')) {
-        get(this, property);
+        this.get(property);
       }
     });
 
-    return get(this, 'content');
+    return this.get('content');
   },
 });
