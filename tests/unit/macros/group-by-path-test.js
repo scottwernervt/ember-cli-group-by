@@ -20,8 +20,8 @@ module('Unit | Macro | group by path', function (hooks) {
       ],
     });
     const grouped = await subject.get('grouped');
-
     const keys = Object.keys(grouped);
+
     assert.deepEqual(keys, ['A', 'B']);
   });
 
@@ -40,8 +40,8 @@ module('Unit | Macro | group by path', function (hooks) {
       ],
     });
     const grouped = await subject.get('grouped');
-
     const keys = Object.keys(await grouped);
+
     assert.deepEqual(keys, ['A', 'B']);
   });
 });
