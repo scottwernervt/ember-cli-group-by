@@ -1,6 +1,11 @@
 # Change Log
 
-## [v0.0.8](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.7) (2018-07-03)
+## [v0.0.9](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.7) (2018-XX-XX)
+
+- Update ember-cli@3.3.0 and ember-source@3.3.2.
+- Update dev dependencies.
+
+## [v0.0.8](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.8) (2018-07-03)
 
 - Update ember-cli@3.2.0 and ember-source@3.2.0.
 - Update dev dependencies.
