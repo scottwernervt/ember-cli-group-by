@@ -1,168 +1,171 @@
 import { A as emberA } from '@ember/array';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
-import { moduleForComponent, test } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import { module, setupRenderingTest, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 
-moduleForComponent('group-by-path', 'helper:group-by-path', {
-  integration: true
-});
+module('Integration | Helper | group by path', function (hooks) {
+  setupRenderingTest(hooks);
 
-test('It groups by given single path', function (assert) {
-  set(this, 'array', emberA([
-    { category: 'A', name: 'a' },
-    { category: 'B', name: 'c' },
-    { category: 'A', name: 'b' },
-    { category: 'B', name: 'd' }
-  ]));
+  test('It groups by given single path', async function (assert) {
+    this.set('cart', [
+      { category: 'A', name: 'a' },
+      { category: 'B', name: 'c' },
+      { category: 'A', name: 'b' },
+      { category: 'B', name: 'd' }
+    ]);
 
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
-});
-
-test('It groups by given single async path', function (assert) {
-  set(this, 'array', RSVP.all(emberA([
-    RSVP.resolve({ category: 'A', name: 'a' }),
-    RSVP.resolve({ category: 'B', name: 'c' }),
-    RSVP.resolve({ category: 'A', name: 'b' }),
-    RSVP.resolve({ category: 'B', name: 'd' })
-  ])));
-
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
-});
-
-test('It groups by given nested path', function (assert) {
-  set(this, 'array', emberA([
-    { category: { type: 'A' }, name: 'a' },
-    { category: { type: 'B' }, name: 'c' },
-    { category: { type: 'A' }, name: 'b' },
-    { category: { type: 'B' }, name: 'd' }
-  ]));
-
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
-});
-
-test('It groups by given nested async path', function (assert) {
-  set(this, 'array', RSVP.all(emberA([
-    RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'a' }),
-    RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'c' }),
-    RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'b' }),
-    RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'd' })
-  ])));
-
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'AabBcd', 'AabBcd is the right order');
-});
-
-test('It groups by given integer path', function (assert) {
-  set(this, 'array', emberA([
-    { category: 1, name: 'a' },
-    { category: 2, name: 'c' },
-    { category: 1, name: 'b' },
-    { category: 2, name: 'd' }
-  ]));
-
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
-
-  assert.equal(this.$().text().trim(), '1ab2cd', '1ab2cd is the right order');
-});
-
-test('It groups missing path into unknown category', function (assert) {
-  set(this, 'actions', {
-    setUnknownGroup(value) {
-      return value === undefined ? 'C' : value;
-    },
+    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
   });
 
-  set(this, 'array', emberA([
-    { category: 'A', name: 'a' },
-    { name: 'c' },
-    { category: 'B', name: 'b' },
-    { name: 'd' }
-  ]));
+  test('It groups by given single async path', async function (assert) {
+    this.set('cart', RSVP.all([
+      RSVP.resolve({ category: 'A', name: 'a' }),
+      RSVP.resolve({ category: 'B', name: 'c' }),
+      RSVP.resolve({ category: 'A', name: 'b' }),
+      RSVP.resolve({ category: 'B', name: 'd' })
+    ]));
 
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category' (action "setUnknownGroup")) as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
 
-  assert.equal(this.$().text().trim(), 'AaCcdBb', 'AaCcdBb is the right order');
-});
+    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+  });
 
-test('It watches for changes', function (assert) {
-  const array = emberA([
-    { category: 'A', name: 'a' },
-    { category: 'B', name: 'c' },
-    { category: 'A', name: 'b' },
-    { category: 'B', name: 'd' }
-  ]);
+  test('It groups by given nested path', async function (assert) {
+    this.set('cart', [
+      { category: { type: 'A' }, name: 'a' },
+      { category: { type: 'B' }, name: 'c' },
+      { category: { type: 'A' }, name: 'b' },
+      { category: { type: 'B' }, name: 'd' }
+    ]);
 
-  set(this, 'array', array);
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category.type') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
 
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
+    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+  });
 
-  run(() => set(array.objectAt(3), 'category', 'C'));
+  test('It groups by given nested async path', async function (assert) {
+    this.set('cart', RSVP.all([
+      RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'a' }),
+      RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'c' }),
+      RSVP.resolve({ category: RSVP.resolve({ type: 'A' }), name: 'b' }),
+      RSVP.resolve({ category: RSVP.resolve({ type: 'B' }), name: 'd' })
+    ]));
 
-  assert.equal(this.$().text().trim(), 'AabBcCd', 'AabBcCd is the right order');
-});
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category.type') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
 
-test('It watches for nested changes', function (assert) {
-  const array = emberA([
-    { category: { type: 'A' }, name: 'a' },
-    { category: { type: 'B' }, name: 'c' },
-    { category: { type: 'A' }, name: 'b' },
-    { category: { type: 'B' }, name: 'd' }
-  ]);
+    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+  });
 
-  set(this, 'array', array);
+  test('It groups by given integer path', async function (assert) {
+    this.set('cart', [
+      { category: 1, name: 'a' },
+      { category: 2, name: 'c' },
+      { category: 1, name: 'b' },
+      { category: 2, name: 'd' }
+    ]);
 
-  this.render(hbs`
-    {{~#each-in (group-by-path array 'category.type') as |category items|~}}
-      {{~category~}}
-      {{~#each items as |item|~}}{{~item.name~}}{{~/each~}}
-    {{~/each-in~}}
-  `);
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
 
-  run(() => set(array.objectAt(3), 'category.type', 'C'));
+    assert.equal(this.element.textContent.trim(), '1ab2cd', '1ab2cd is the right order');
+  });
 
-  assert.equal(this.$().text().trim(), 'AabBcCd', 'AabBcCd is the right order');
+  test('It groups missing path into unknown category', async function (assert) {
+    this.set('actions', {
+      setUnknownGroup(value) {
+        return value === undefined ? 'C' : value;
+      },
+    });
+
+    this.set('cart', [
+      { category: 'A', name: 'a' },
+      { name: 'c' },
+      { category: 'B', name: 'b' },
+      { name: 'd' }
+    ]);
+
+    await this.render(hbs`
+      {{~#each-in (group-by-path cart 'category' (action "setUnknownGroup")) as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
+
+    assert.equal(this.element.textContent.trim(), 'AaCcdBb', 'AaCcdBb is the right order');
+  });
+
+  test('It watches for changes', async function (assert) {
+    this.set('cart', emberA([
+      { category: 'A', name: 'a' },
+      { category: 'B', name: 'c' },
+      { category: 'A', name: 'b' },
+      { category: 'B', name: 'd' }
+    ]));
+
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
+
+    run(() => {
+      const product = this.get('cart').objectAt(3);
+      set(product, 'category', 'C');
+    });
+
+    assert.equal(this.element.textContent.trim(), 'AabBcCd', 'AabBcCd is the right order');
+  });
+
+  test('It watches for nested changes', async function (assert) {
+    this.set('cart', emberA([
+      { category: { type: 'A' }, name: 'a' },
+      { category: { type: 'B' }, name: 'c' },
+      { category: { type: 'A' }, name: 'b' },
+      { category: { type: 'B' }, name: 'd' }
+    ]));
+
+    await render(hbs`
+      {{~#each-in (group-by-path cart 'category.type') as |category products|~}}
+        {{~category~}}
+        {{~#each products as |product|~}}{{~product.name~}}{{~/each~}}
+      {{~/each-in~}}
+    `);
+
+    run(() => {
+      const product = this.get('cart').objectAt(3);
+      set(product, 'category.type', 'C');
+    });
+
+    assert.equal(this.element.textContent.trim(), 'AabBcCd', 'AabBcCd is the right order');
+  });
 });
