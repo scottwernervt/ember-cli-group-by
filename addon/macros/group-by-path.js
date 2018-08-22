@@ -1,5 +1,5 @@
 import { isArray } from '@ember/array';
-import EmberObject, { computed, defineProperty, get } from '@ember/object';
+import EmberObject, { computed, defineProperty } from '@ember/object';
 import ComputedProperty from '@ember/object/computed';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { camelize } from '@ember/string';
@@ -17,10 +17,10 @@ import groupBy from '../utils/group-by';
  * @public
  */
 export function groupByPath(dependentKey, propertyPath, groupDefinition) {
-  let cp = new ComputedProperty(function (key) {
+  const cp = new ComputedProperty(function (key) {
     // Add/remove property observers as required.
-    let activeObserversMap = cp._activeObserverMap || (cp._activeObserverMap = new WeakMap());
-    let activeObservers = activeObserversMap.get(this);
+    const activeObserversMap = cp._activeObserverMap || (cp._activeObserverMap = new WeakMap());
+    const activeObservers = activeObserversMap.get(this);
 
     if (activeObservers !== undefined) {
       activeObservers.forEach(args => removeObserver(...args));
@@ -31,7 +31,7 @@ export function groupByPath(dependentKey, propertyPath, groupDefinition) {
     }
 
     // Unique computed property name so they do not overwrite each other.
-    let chain = '_' + camelize(
+    const chain = '_' + camelize(
       `chain_${dependentKey.replace('.', ' ')}_${propertyPath.replace('.', ' ')}`
     );
 
@@ -39,19 +39,19 @@ export function groupByPath(dependentKey, propertyPath, groupDefinition) {
     propertyPath.split('.').forEach((path, index, paths) => {
       if (index === 0) {
         defineProperty(this, `${chain}${index}`, computed.mapBy(dependentKey, path));
-        get(this, `${chain}${index}`);
+        this.get(`${chain}${index}`);
       } else if (index + 1 === paths.length) {
         addObserver(this, `${chain}${index - 1}.@each.${path}`, groupPropertyDidChange);
         activeObserversMap.set(this,
           [[this, `${chain}${index - 1}.@each.${path}`, groupPropertyDidChange]]);
       } else {
         defineProperty(this, `${chain}${index}`, computed.mapBy(`${chain}${index - 1}`, path));
-        get(this, `${chain}${index}`);
+        this.get(`${chain}${index}`);
       }
     });
 
-    let itemsKeyIsAtThis = (dependentKey === '@this');
-    let items = itemsKeyIsAtThis ? this : get(this, dependentKey);
+    const itemsKeyIsAtThis = (dependentKey === '@this');
+    const items = itemsKeyIsAtThis ? this : this.get(dependentKey);
 
     if (!isArray(items)) {
       return EmberObject.create({});

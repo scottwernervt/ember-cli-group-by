@@ -32,7 +32,7 @@ export default function groupBy(array, key, definition) {
 
       groupName.then((groupName) => {
         const groupKey = definition ? definition(groupName) : groupName;
-        let currentGroup = get(groups, `${groupKey}`);
+        let currentGroup = groups.get(`${groupKey}`);
 
         if (!isArray(currentGroup)) {
           currentGroup = emberA();
