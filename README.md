@@ -63,18 +63,22 @@ ember install ember-cli-group-by
 
 ```javascript
 import Controller from '@ember/controller';
-import { A as emberA } from '@ember/array';
+import { A } from '@ember/array';
 import { groupByPath } from 'ember-cli-group-by/macros';
 
 export default Controller.extend({
-  cart: emberA([
-    { name: 'Cinnamon ', category: 'Spice' },
-    { name: 'Banana', category: 'Fruit' },
-    { name: 'Apple', category: 'Fruit' },
-    { name: 'Lettuce', category: 'Vegetable' },
-    { name: 'Broccoli', category: 'Vegetable' },
-  ]),
   cartGrouped: groupByPath('cart', 'category'),
+  
+  init() {
+    this._super(...arguments);
+    this.set('cart', A([
+      { name: 'Cinnamon ', category: 'Spice' },
+      { name: 'Banana', category: 'Fruit' },
+      { name: 'Apple', category: 'Fruit' },
+      { name: 'Lettuce', category: 'Vegetable' },
+      { name: 'Broccoli', category: 'Vegetable' },
+    ]);
+  },
 });
 ```
 
@@ -93,16 +97,19 @@ export default Controller.extend({
 
 ```javascript
 import Controller from '@ember/controller';
-import { A as emberA } from '@ember/array';
+import { A } from '@ember/array';
 
 export default Controller.extend({
-  cart: emberA([
-    { name: 'Cinnamon ', category: 'Spice' },
-    { name: 'Banana', category: 'Fruit' },
-    { name: 'Apple', category: 'Fruit' },
-    { name: 'Lettuce', category: 'Vegetable' },
-    { name: 'Broccoli', category: 'Vegetable' },
-  ]),
+  init() {
+    this._super(...arguments);
+    this.set('cart', A([
+      { name: 'Cinnamon ', category: 'Spice' },
+      { name: 'Banana', category: 'Fruit' },
+      { name: 'Apple', category: 'Fruit' },
+      { name: 'Lettuce', category: 'Vegetable' },
+      { name: 'Broccoli', category: 'Vegetable' },
+    ]);
+  },
 });
 ```
 
@@ -126,23 +133,27 @@ passing a closure action to the helper.
 
 ```javascript
 import Controller from '@ember/controller';
-import { A as emberA } from '@ember/array';
+import { A } from '@ember/array';
 import { isNone } from '@ember/utils';
 import { groupByPath } from 'ember-cli-group-by/macros';
 
 export default Controller.extend({
-  cart: emberA([
-    { name: 'Cinnamon ', category: 'Spice' },
-    { name: 'Banana', category: 'Fruit' },
-    { name: 'Apple', category: 'Fruit' },
-    { name: 'Lettuce', category: 'Vegetable' },
-    { name: 'Broccoli', category: 'Vegetable' },
-    { name: 'Salt', category: null },
-    { name: 'Sugar' },
-  ]),
   cartGrouped: groupByPath('cart', 'category', function (value) {
     return isNone(value) ? 'Other' :  value;
   }),
+  
+  init() {
+    this._super(...arguments);
+    this.set('cart', A([
+      { name: 'Cinnamon ', category: 'Spice' },
+      { name: 'Banana', category: 'Fruit' },
+      { name: 'Apple', category: 'Fruit' },
+      { name: 'Lettuce', category: 'Vegetable' },
+      { name: 'Broccoli', category: 'Vegetable' },
+      { name: 'Salt', category: null },
+      { name: 'Sugar' },
+    ]);
+  },
 });
 ```
 
@@ -150,19 +161,22 @@ export default Controller.extend({
 
 ```javascript
 import Controller from '@ember/controller';
-import { A as emberA } from '@ember/array';
+import { A } from '@ember/array';
 import { isNone } from '@ember/utils';
 
 export default Controller.extend({
-  cart: emberA([
-    { name: 'Cinnamon ', category: 'Spice' },
-    { name: 'Banana', category: 'Fruit' },
-    { name: 'Apple', category: 'Fruit' },
-    { name: 'Lettuce', category: 'Vegetable' },
-    { name: 'Broccoli', category: 'Vegetable' },
-    { name: 'Salt', category: null },
-    { name: 'Sugar' },
-  ]),
+  init() {
+    this._super(...arguments);
+    this.set('cart', A([
+      { name: 'Cinnamon ', category: 'Spice' },
+      { name: 'Banana', category: 'Fruit' },
+      { name: 'Apple', category: 'Fruit' },
+      { name: 'Lettuce', category: 'Vegetable' },
+      { name: 'Broccoli', category: 'Vegetable' },
+      { name: 'Salt', category: null },
+      { name: 'Sugar' },
+    ]);
+  },
   
   actions: {
     defaultCategory(value) {
