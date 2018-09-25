@@ -1,6 +1,7 @@
 import EmberObject from '@ember/object';
 import { groupByPath } from 'ember-cli-group-by/macros';
-import { module, setupTest, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
 module('Unit | Macro | group by path', function (hooks) {
   setupTest(hooks);

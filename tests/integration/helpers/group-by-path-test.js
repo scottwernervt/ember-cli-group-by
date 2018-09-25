@@ -2,7 +2,8 @@ import { A as emberA } from '@ember/array';
 import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 import { render } from '@ember/test-helpers';
-import { module, setupRenderingTest, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 
@@ -24,7 +25,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+    assert.dom(this.element).hasText('AabBcd', 'AabBcd is the right order');
   });
 
   test('It groups by given single async path', async function (assert) {
@@ -42,7 +43,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+    assert.dom(this.element).hasText('AabBcd', 'AabBcd is the right order');
   });
 
   test('It groups by given nested path', async function (assert) {
@@ -60,7 +61,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+    assert.dom(this.element).hasText('AabBcd', 'AabBcd is the right order');
   });
 
   test('It groups by given nested async path', async function (assert) {
@@ -78,7 +79,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'AabBcd', 'AabBcd is the right order');
+    assert.dom(this.element).hasText('AabBcd', 'AabBcd is the right order');
   });
 
   test('It groups by given integer path', async function (assert) {
@@ -96,7 +97,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), '1ab2cd', '1ab2cd is the right order');
+    assert.dom(this.element).hasText('1ab2cd', '1ab2cd is the right order');
   });
 
   test('It groups missing path into unknown category', async function (assert) {
@@ -120,7 +121,7 @@ module('Integration | Helper | group by path', function (hooks) {
       {{~/each-in~}}
     `);
 
-    assert.equal(this.element.textContent.trim(), 'AaCcdBb', 'AaCcdBb is the right order');
+    assert.dom(this.element).hasText('AaCcdBb', 'AaCcdBb is the right order');
   });
 
   test('It watches for changes', async function (assert) {
@@ -143,7 +144,7 @@ module('Integration | Helper | group by path', function (hooks) {
       set(product, 'category', 'C');
     });
 
-    assert.equal(this.element.textContent.trim(), 'AabBcCd', 'AabBcCd is the right order');
+    assert.dom(this.element).hasText('AabBcCd', 'AabBcCd is the right order');
   });
 
   test('It watches for nested changes', async function (assert) {
@@ -166,6 +167,6 @@ module('Integration | Helper | group by path', function (hooks) {
       set(product, 'category.type', 'C');
     });
 
-    assert.equal(this.element.textContent.trim(), 'AabBcCd', 'AabBcCd is the right order');
+    assert.dom(this.element).hasText('AabBcCd', 'AabBcCd is the right order');
   });
 });
