@@ -1,5 +1,8 @@
 import { isArray } from '@ember/array';
-import EmberObject, { computed, defineProperty } from '@ember/object';
+import EmberObject, {
+  computed,
+  defineProperty
+} from '@ember/object';
 import ComputedProperty from '@ember/object/computed';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { camelize } from '@ember/string';

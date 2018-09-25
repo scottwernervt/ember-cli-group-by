@@ -1,5 +1,6 @@
 import groupBy from 'dummy/utils/group-by';
-import { module, setupTest, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
 module('Unit | Utility | group by', function (hooks) {
   setupTest(hooks);
