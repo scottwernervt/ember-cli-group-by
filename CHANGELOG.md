@@ -1,6 +1,6 @@
 # Change Log
 
-## [v0.0.9](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.7) (2018-XX-XX)
+## [v0.0.9](https://github.com/scottwernervt/ember-cli-group-by/tree/v0.0.7) (2018-09-25)
 
 - Upgrade to `ember-cli@3.4.3` and `ember-source@3.4.2`.
 - Update dev dependencies.
