@@ -15,12 +15,15 @@ module.exports = {
     browser: true
   },
   rules: {
-    'ember/no-observers': 0
+    'ember/no-observers': 0,
+    // https://github.com/ember-cli/eslint-plugin-ember/issues/337
+    'ember/no-restricted-resolver-tests': 'off'
   },
   overrides: [
     // node files
     {
       files: [
+        '.eslintrc.js',
         '.template-lintrc.js',
         'ember-cli-build.js',
         'index.js',
